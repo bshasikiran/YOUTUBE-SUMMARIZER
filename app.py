@@ -1,15 +1,16 @@
-#DEVELOPER: SHASIKIRAN @Shasikiran_2004
+# DEVELOPER: SHASIKIRAN @Shasikiran_2004
+
 import streamlit as st
 from dotenv import load_dotenv
 import os
 import google.generativeai as genai
 from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api.proxies import WebshareProxyConfig
 from urllib.parse import urlparse, parse_qs
 import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 import pyperclip
-
 
 # Load environment variables
 load_dotenv()
@@ -29,10 +30,15 @@ def get_video_id(youtube_url):
         return parse_qs(parsed_url.query).get("v", [None])[0]
     return None
 
-# Extract Transcript
+# Extract Transcript (with Webshare proxy)
 def extract_transcript_details(video_id):
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        proxy_config = WebshareProxyConfig(
+            proxy_username=os.getenv("WEBSHARE_PROXY_USERNAME"),
+            proxy_password=os.getenv("WEBSHARE_PROXY_PASSWORD"),
+        )
+        ytt_api = YouTubeTranscriptApi(proxy_config=proxy_config)
+        transcript = ytt_api.get_transcript(video_id)
         return " ".join([segment["text"] for segment in transcript])
     except Exception as e:
         raise e
@@ -113,7 +119,7 @@ if st.button("✨ Get Detailed Notes"):
                     st.download_button("📥 Download Summary as PDF", data=pdf_buffer,
                                        file_name="YouTube_Summary.pdf", mime="application/pdf")
 
-                    # Copy to clipboard (note: works only locally if `pyperclip` is installed)
+                    # Copy to clipboard (works only locally)
                     if st.button("📋 Copy Summary to Clipboard"):
                         try:
                             pyperclip.copy(summary)
