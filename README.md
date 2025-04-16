@@ -1,5 +1,7 @@
-Welcome to the YouTube Transcript to Detailed Notes Converter! 📄✂️
+**Welcome to the YouTube Transcript to Detailed Notes Converter! 📄✂️**
+
 Deplpoyed on : https://youtube-summarizer-o2phtkh2jg4qg2h54ysftv.streamlit.app/
+
 Ever found yourself watching a long YouTube video and wished you could have a neat summary of the key takeaways? Well, this little app is here to save the day! 🌟
 
 With this tool, you can:
