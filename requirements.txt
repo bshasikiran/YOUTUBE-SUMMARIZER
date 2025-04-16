@@ -1,5 +1,6 @@
-youtube_transcript_api
 streamlit
 google-generativeai
+youtube-transcript-api
+reportlab
+pyperclip
 python-dotenv
-pathlib
